@@ -22,6 +22,4 @@ app.use('/api/v1/tours',tourRouter);
 app.use('/api/v1/users',userRouter);
 
 
-app.listen(4000, '127.0.0.1', () => {
-  console.log('Listening from port 4000...');
-});
+module.exports=app;
