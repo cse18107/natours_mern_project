@@ -1,7 +1,5 @@
 const express=require('express');
-const app=express();
 const userController=require('./../controllers/userController');
-const fs=require('fs');
 const router=express.Router();
 
 router
