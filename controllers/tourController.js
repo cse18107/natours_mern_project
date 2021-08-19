@@ -4,12 +4,14 @@ const tours = JSON.parse(
 );
 
 exports.checkID = (req, res, next, val) => {
+  console.log(`Tour id is: ${val}`);
   if (req.params.id * 1 > tours.length) {
     return res.status(400).json({
       status: 'Not found',
       message: 'tour Not found',
     });
   }
+  next();
 };
 
 exports.getAllTours = (req, res) => {
@@ -22,6 +24,7 @@ exports.getAllTours = (req, res) => {
   });
 };
 exports.getTour = (req, res) => {
+  const tour = tours.find(ele=>(ele.id===req.params.id*1));
   res.status(200).json({
     status: 'success',
     data: {
