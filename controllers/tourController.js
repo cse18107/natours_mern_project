@@ -3,6 +3,15 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`, 'utf-8')
 );
 
+exports.checkID = (req, res, next, val) => {
+  if (req.params.id * 1 > tours.length) {
+    return res.status(400).json({
+      status: 'Not found',
+      message: 'tour Not found',
+    });
+  }
+};
+
 exports.getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -13,21 +22,12 @@ exports.getAllTours = (req, res) => {
   });
 };
 exports.getTour = (req, res) => {
-  const id = req.params.id * 1;
-  const tour = tours.find((ele) => ele.id === id);
-  if (tour) {
-    res.status(200).json({
-      status: 'success',
-      data: {
-        tour: tour,
-      },
-    });
-  } else {
-    res.status(404).json({
-      status: 'not valid',
-      message: 'tour not found',
-    });
-  }
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour: tour,
+    },
+  });
 };
 exports.postTour = (req, res) => {
   console.log(req.body);
@@ -43,34 +43,15 @@ exports.postTour = (req, res) => {
   res.send('done');
 };
 exports.patchTour = (req, res) => {
-  console.log(req.params);
-  const id = req.params.id * 1;
-  const tour = tours.find((ele) => ele.id === id);
-  if (tour) {
-    res.status(201).json({
-      status: 'success',
-      data: {
-        tour: tour,
-      },
-    });
-  } else {
-    res.json({
-      message: 'URL not currect',
-    });
-  }
+  res.status(201).json({
+    status: 'success',
+    data: {
+      tour: tour,
+    },
+  });
 };
 exports.deleteTour = (req, res) => {
-  const id = req.params.id * 1;
-  const tour = tours.find((el) => el.id === id);
-  if (tour) {
-    res.status(202).json({
-      status: 'success',
-      message: 'data is deleted',
-    });
-  } else {
-    res.status(404).json({
-      status: 'unsuccess',
-      message: 'data is not found',
-    });
-  }
+  res.status(202).json({
+    status: 'success',
+  });
 };
