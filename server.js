@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const dotenv = require('dotenv');
 const app = require('./app');
 
@@ -16,6 +15,8 @@ mongoose.connect(DB,{
 }).then(con => {
   console.log('DB connection successful!');
 });
+
+
 
 app.listen(4000, '127.0.0.1', () => {
   console.log('Listening from port 4000...');
