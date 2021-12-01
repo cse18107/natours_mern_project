@@ -1,20 +1,26 @@
-const fs=require('fs');
-const users = JSON.parse(
-  fs.readFileSync(`${__dirname}/../dev-data/data/users.json`, 'utf-8')
-);
+const User = require('./../models/userModel');
+const catchAsync = require('./../utils/catchAsync');
 
-exports.getAllUsers = (req, res) => {
+
+exports.getAllUsers =catchAsync(async (req, res, next) => {
+  const users = await User.find();
+
+  // SEND RESPONSE
   res.status(200).json({
     status: 'success',
+    results: users.length,
     data: {
-      users: users,
+      users
     },
   });
-};
-exports.getUser = (req, res) => {
+});
+
+
+exports.getUser = async(req, res) => {
   console.log(req.params._id);
+  const users = await User.find();
   const id = req.params._id;
-  const user = users.find((ele) => ele._id === id);
+  const user = users.find((ele) => ele.id === id);
   console.log(user);
   if (user) {
     res.status(200).json({
@@ -25,17 +31,18 @@ exports.getUser = (req, res) => {
     });
   } else {
     res.status(404).json({
-      status: 'faild',
+      status: 'failed',
       message: "Can't find user",
     });
   }
 };
-exports.postUser = (req, res) => {
+exports.postUser =async (req, res) => {
+  const users = await User.find();
   const length = users.length;
   console.log(req.body);
   const user = req.body;
   const newUser = Object.assign({ _id: length + 1 }, user);
-  users.push(newUser);
+  User.push(newUser);
   fs.writeFile(
     `${__dirname}/dev-data/data/users.json`,
     JSON.stringify(users),
@@ -51,10 +58,11 @@ exports.postUser = (req, res) => {
     },
   });
 };
-exports.patchUser = (req, res) => {
+exports.patchUser = async(req, res) => {
+  const users = await User.find();
   console.log(req.params);
   const id = req.params.id;
-  const user = users.find((ele) => ele.id === id);
+  const user = users.find((ele) => ele._id === id);
   if (user) {
     res.status(201).json({
       status: 'success',
@@ -68,9 +76,10 @@ exports.patchUser = (req, res) => {
     });
   }
 };
-exports.deleteUser = (req, res) => {
+exports.deleteUser = async(req, res) => {
+  const users = await User.find();
   const id = req.params.id;
-  const user = users.find((el) => el.id === id);
+  const user =users.find((el) => el.id === id);
   if (user) {
     res.status(202).json({
       status: 'success',
